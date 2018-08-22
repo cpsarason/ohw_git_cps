@@ -263,13 +263,11 @@ function appendPre(message) {
 
 function listObs() {
   gapi.client.sheets.spreadsheets.values.get({
-    // OceanHackWeek sheet
-    spreadsheetId: '1F5nnzIK04bucpsct7IBlGegome3T-mp26bKfZ9hKSwQ',
-    range: 'OrcaSoundObsTest!A2:I',
+    // OceanHackWeek Sharknado sheet
+    spreadsheetId: '1Lz9KLMHkt5iQXENAN4-CVsY_-cClkUIO',
+    range: '18224!A2:L',
 
-    // OrcaSound Sheet
-    // spreadsheetId: '17iOHfRAVa3MUPPZcGEMYNIyk_RlSER5zYcITPcNVRwg',
-    // range: 'OrcaSoundObsTest!A2:I',
+
   }).then(function(response) {
     var range = response.result;
     if (range.values.length > 0) {
@@ -332,13 +330,9 @@ function readObs() {
 
 
   gapi.client.sheets.spreadsheets.values.get({
-    // OceanHackWeek sheet
-    spreadsheetId: '1F5nnzIK04bucpsct7IBlGegome3T-mp26bKfZ9hKSwQ',
-    range: 'OrcaSoundObsTest!A2:I',
-
-    // OrcaSound Sheet
-    // spreadsheetId: '17iOHfRAVa3MUPPZcGEMYNIyk_RlSER5zYcITPcNVRwg',
-    // range: 'OrcaSoundObsTest!A2:I',
+    // OceanHackWeek Sharknado sheet
+    spreadsheetId: '1Lz9KLMHkt5iQXENAN4-CVsY_-cClkUIO',
+    range: '18224!A2:L',
   }).then(function(response) {
     var range = response.result;
     if (range.values.length > 0) {
@@ -368,13 +362,13 @@ function readObs() {
             "type": "Feature",
             "geometry": {
                 "type": "Point",
-                "coordinates": [parseFloat(row[4]),parseFloat(row[5])]
+                "coordinates": [parseFloat(row[10]),parseFloat(row[9])]
             },
             "properties": {
                 "title": "Unverified Sighting",
                 "time": row[0],
                 "user": row[3],
-                "note": row[9]
+                "note": row[11]
             }
           }
           gsheetRawObs.features.push(newRawObs);
@@ -392,50 +386,9 @@ function readObs() {
   return [gsheetVerifiedObs, gsheetRawObs];
 }
 
-function writeObs(obs) {
-  //console.log(obs);
-  //console.log(JSON.stringify(obs));
-
-  // test to make sure feature has an associated timestamp before adding it
-  if (obs.properties.timestamp) {
-    //console.log('obs has time parameter: ' + obs.properties.time);
-
-    //TODO: this user from oauth is badly hardwired. need to figure out a better
-    //      way to id users
-    var values = [
-      [
-        obs.properties.timestamp,
-        obs.properties.humantime,
-        "visual",
-        gapi.auth2.getAuthInstance().currentUser.Ab.w3.U3,
-        obs.geometry.coordinates[0],
-        obs.geometry.coordinates[1]
-      ],
-      // Additional rows ...
-    ];
-    var body = {
-      values: values
-    };
-
-    //TODO: update to bulk update, rows are being dropped 5/31/2018
-    gapi.client.sheets.spreadsheets.values.append({
-      // OceanHackWeek sheet
-      spreadsheetId: '1F5nnzIK04bucpsct7IBlGegome3T-mp26bKfZ9hKSwQ',
-      range: 'OrcaSoundObsTest!A2:I',
-
-      // OrcaSound Sheet
-      // spreadsheetId: '17iOHfRAVa3MUPPZcGEMYNIyk_RlSER5zYcITPcNVRwg',
-      // range: 'OrcaSoundObsTest!A2:I',
-       valueInputOption: 'USER_ENTERED',
-       insertDataOption: 'INSERT_ROWS',
-       resource: body
-    }).then((response) => {
-      var result = response.result;
-      //console.log(response);
-      //console.log(`${result.updatedCells} cells updated.`);
-    });
-  }
-}
+// OceanHackWeek Sharknado sheet
+spreadsheetId: '1Lz9KLMHkt5iQXENAN4-CVsY_-cClkUIO',
+range: '18224!A2:L',
 
 
 
